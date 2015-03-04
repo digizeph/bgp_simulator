@@ -14,16 +14,41 @@ import java.util.*;
 public class Topology {
 
     HashSet<BGPAS> asSet;
-
-    public HashMap<Integer, BGPAS> getAsMap() {
-        return asMap;
-    }
-
     HashMap<Integer,BGPAS> asMap;
 
     public Topology(){
         asSet = new HashSet<>();
         asMap = new HashMap<>();
+    }
+
+    public static void main(String[] args) {
+
+        long startTime = System.currentTimeMillis();
+        long heapFreeSize = Runtime.getRuntime().freeMemory();
+        long heapSize = Runtime.getRuntime().totalMemory();
+        System.out.printf("%d MB.\n",heapSize/1024/1024);
+
+        Topology topo = new Topology();
+        topo.loadTopology("/Users/mingwei/netsec/drawbridge/data/topology","20150101.as-rel.txt");
+
+        heapFreeSize = Runtime.getRuntime().freeMemory();
+        heapSize = Runtime.getRuntime().totalMemory();
+        System.out.printf("%d MB.\n",heapSize/1024/1024);
+
+        Map<Integer,BGPAS> map = topo.getAsMap();
+
+        BGPAS example = map.get(1);
+
+        example.propagatePath(new ArrayList<BGPAS>());
+
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.printf("total time: %d\n",totalTime/1000);
+
+    }
+
+    public HashMap<Integer, BGPAS> getAsMap() {
+        return asMap;
     }
 
     public void loadTopology(String folder, String filename){
@@ -47,26 +72,5 @@ public class Topology {
                 as2.addProvider(as1);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        long heapFreeSize = Runtime.getRuntime().freeMemory();
-        long heapSize = Runtime.getRuntime().totalMemory();
-        System.out.printf("%d MB.\n",heapSize/1024/1024);
-
-        Topology topo = new Topology();
-        topo.loadTopology("/Users/mingwei/netsec/drawbridge/data/topology","20150101.as-rel.txt");
-
-        heapFreeSize = Runtime.getRuntime().freeMemory();
-        heapSize = Runtime.getRuntime().totalMemory();
-        System.out.printf("%d MB.\n",heapSize/1024/1024);
-
-        Map<Integer,BGPAS> map = topo.getAsMap();
-
-        BGPAS example = map.get(1);
-
-        example.propagatePath(new ArrayList<BGPAS>());
-
-
     }
 }

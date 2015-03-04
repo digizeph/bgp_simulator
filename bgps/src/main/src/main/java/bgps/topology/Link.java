@@ -12,11 +12,10 @@ import org.javatuples.Pair;
 public class Link {
 
     protected Pair<BGPAS,BGPAS> asPair;
+    private Relation relation;
 
     public Pair<BGPAS,BGPAS> getAsPair(){
         return asPair;
     }
-
-    private Relation relation;
 
 }
