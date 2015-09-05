@@ -23,23 +23,29 @@ public class Topology {
 
     public static void main(String[] args) {
 
+        if(args.length!=2){
+            System.out.println("need folder and file name as inputs (size of 2)");
+            return;
+        }
+
         long startTime = System.currentTimeMillis();
-        long heapFreeSize = Runtime.getRuntime().freeMemory();
-        long heapSize = Runtime.getRuntime().totalMemory();
-        System.out.printf("%d MB.\n",heapSize/1024/1024);
 
         Topology topo = new Topology();
-        topo.loadTopology("/Users/mingwei/netsec/drawbridge/data/topology","20150101.as-rel.txt");
+        topo.loadTopology(args[0],args[1]);
 
-        heapFreeSize = Runtime.getRuntime().freeMemory();
-        heapSize = Runtime.getRuntime().totalMemory();
-        System.out.printf("%d MB.\n",heapSize/1024/1024);
 
         Map<Integer,BGPAS> map = topo.getAsMap();
-
         BGPAS example = map.get(1);
-
         example.propagatePath(new ArrayList<BGPAS>());
+
+        for(int asn: map.keySet()){
+            BGPAS as = map.get(asn);
+            System.out.printf("%d: ",asn);
+            for(int n: as.getPaths()){
+                System.out.printf("%d ",n);
+            }
+            System.out.println();
+        }
 
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;

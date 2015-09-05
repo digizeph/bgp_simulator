@@ -47,6 +47,15 @@ public class BGPAS {
         peers.add(as);
     }
 
+    public ArrayList<Integer> getPaths(){
+        ArrayList<Integer> pathInts = new ArrayList<>();
+        for(BGPAS as: path){
+            pathInts.add(as.getAsn());
+        }
+
+        return pathInts;
+    }
+
     public List<BGPAS> getToSendTargets(){
 
         List<BGPAS> toSend = new ArrayList<>();
@@ -109,7 +118,7 @@ public class BGPAS {
 
     public void propagatePath(List<BGPAS> path){
 
-        System.out.println(asn);
+        //System.out.println(asn);
         receivePath(path);
         List<BGPAS> targets = getToSendTargets();
         List<BGPAS> newpath = new ArrayList<>();

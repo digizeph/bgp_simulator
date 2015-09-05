@@ -26,6 +26,8 @@ public class Input {
 
         List<Triplet<Integer,Integer,Integer>> res = new ArrayList<>();
 
+        try {
+
         String line;
 
         BufferedReader br = FileOp.getBufferedReader(folder, filename);
@@ -49,6 +51,11 @@ public class Input {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return res;
